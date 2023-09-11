@@ -1,0 +1,28 @@
+# Read data from file (replace 'data.txt' with your file path)
+original_data <- read.table("path\\data.txt", header = TRUE)
+# Display the original data
+cat("Original Data:\n")
+print(original_data)
+# Replace negative values with zero using apply
+modified_data <- data.frame(apply(original_data, 2, function(column)
+ifelse(column < 0, 0, column)))
+# Call the function to display data modification
+cat("\nData after replacing negative values with zero:\n")
+print(modified_data)
+# Function to calculate mean, variance, and standard deviation
+calculate_stats <- function(column) {
+ stats <- c(
+ mean = mean(column),
+ variance = var(column),
+ std_dev = sd(column)
+ )
+ return(stats)
+}
+# Use apply to calculate statistics for each column
+column_stats <- lapply(modified_data, calculate_stats)
+# Convert the list of statistics into a data frame
+stats_df <- do.call(rbind, column_stats)
+rownames(stats_df) <- c("Mean", "Variance", "Standard Deviation")
+# Print the statistics
+cat("\nColumn Statistics:\n")
+print(stats_df)
